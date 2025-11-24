@@ -15,10 +15,24 @@ This directory contains example code demonstrating the best practices and patter
 
 ```
 examples/
-├── python/          # Python and FastAPI examples
-├── nodejs/          # Node.js and TypeScript examples
-├── devops/          # Docker, Kubernetes, and infrastructure examples
-└── README.md        # This file
+├── python/                     # Python and FastAPI examples
+│   ├── fastapi_example.py     # Complete FastAPI application
+│   └── requirements.txt       # Python dependencies
+├── nodejs/                     # Node.js and TypeScript examples
+│   ├── express_example.ts     # Complete Express application
+│   ├── package.json           # Node.js dependencies and scripts
+│   └── tsconfig.json          # TypeScript configuration
+├── devops/                     # Docker, Kubernetes, and infrastructure
+│   ├── Dockerfile.python      # Python production Dockerfile
+│   ├── Dockerfile.nodejs      # Node.js production Dockerfile
+│   ├── docker-compose.yml     # Development stack configuration
+│   ├── kubernetes-deployment.yaml  # K8s production manifests
+│   ├── nginx.conf             # Nginx reverse proxy config
+│   ├── init-db.sql            # PostgreSQL initialization script
+│   └── DEPLOYMENT_GUIDE.md    # Comprehensive deployment guide
+├── DATABASE_INTEGRATION.md     # Guide for adding database support
+├── TESTING_GUIDE.md           # Testing best practices and examples
+└── README.md                   # This file
 ```
 
 ## Python Examples
@@ -74,10 +88,10 @@ curl -X POST "http://localhost:8000/api/v1/posts?author_id=1" \
 ```
 
 ### Use @python-dev to:
-- Add database integration (PostgreSQL, SQLAlchemy)
+- Add database integration (PostgreSQL, SQLAlchemy) - see [DATABASE_INTEGRATION.md](DATABASE_INTEGRATION.md)
 - Implement JWT authentication
 - Add LangChain integration for AI features
-- Write pytest tests
+- Write pytest tests - see [TESTING_GUIDE.md](TESTING_GUIDE.md)
 - Add ChromaDB for vector storage
 
 ## Node.js Examples
@@ -127,10 +141,10 @@ curl "http://localhost:3000/api/v1/users?limit=5&activeOnly=true"
 ```
 
 ### Use @nodejs-dev to:
-- Add database integration (Prisma, TypeORM)
+- Add database integration (Prisma, TypeORM) - see [DATABASE_INTEGRATION.md](DATABASE_INTEGRATION.md)
 - Implement authentication with Passport.js
 - Add React frontend components
-- Write Jest tests
+- Write Jest tests - see [TESTING_GUIDE.md](TESTING_GUIDE.md)
 - Add GraphQL support
 
 ## DevOps Examples
@@ -271,6 +285,8 @@ See [DEPLOYMENT_GUIDE.md](devops/DEPLOYMENT_GUIDE.md) for comprehensive deployme
 - Add monitoring (Prometheus, Grafana)
 - Create Helm charts
 
+See [DEPLOYMENT_GUIDE.md](devops/DEPLOYMENT_GUIDE.md) for detailed deployment instructions.
+
 ## Documentation Examples
 
 The custom agents themselves demonstrate excellent documentation:
@@ -349,6 +365,36 @@ kubectl apply -f examples/devops/kubernetes-deployment.yaml
 - **Iterate**: Use agents multiple times to refine the code
 - **Combine agents**: Use multiple agents for different aspects of a feature
 - **Learn patterns**: Study the generated code to learn best practices
+
+## Comprehensive Guides
+
+This examples directory includes detailed guides for advanced topics:
+
+### 📖 [DATABASE_INTEGRATION.md](DATABASE_INTEGRATION.md)
+Learn how to replace in-memory storage with PostgreSQL:
+- SQLAlchemy setup for Python/FastAPI
+- Prisma setup for Node.js/Express
+- Database migrations with Alembic and Prisma
+- Connection pooling and optimization
+- Production best practices
+
+### 🧪 [TESTING_GUIDE.md](TESTING_GUIDE.md)
+Comprehensive testing strategies and examples:
+- Unit testing with pytest and Jest
+- Integration testing with test clients
+- API testing with cURL
+- Docker and Docker Compose testing
+- Load testing with ab and wrk
+- CI/CD integration
+
+### 🚀 [devops/DEPLOYMENT_GUIDE.md](devops/DEPLOYMENT_GUIDE.md)
+Production deployment instructions:
+- Local development setup
+- Docker image building and running
+- Docker Compose stack deployment
+- Kubernetes deployment and management
+- Scaling and monitoring
+- Troubleshooting common issues
 
 ## Resources
 
