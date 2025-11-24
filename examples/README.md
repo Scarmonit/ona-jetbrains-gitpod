@@ -2,14 +2,37 @@
 
 This directory contains example code demonstrating the best practices and patterns that GitHub Copilot custom agents will help you create.
 
+## 📋 What's Included
+
+- **Python FastAPI example** with complete dependencies (`requirements.txt`)
+- **Node.js Express example** with TypeScript and full package configuration (`package.json`, `tsconfig.json`)
+- **Docker configurations** for both Python and Node.js applications
+- **Docker Compose stack** with PostgreSQL, Redis, and Nginx
+- **Kubernetes deployment manifests** with ConfigMaps, Secrets, and autoscaling
+- **Comprehensive deployment guide** for local development and production
+
 ## Directory Structure
 
 ```
 examples/
-├── python/          # Python and FastAPI examples
-├── nodejs/          # Node.js and TypeScript examples
-├── devops/          # Docker, Kubernetes, and infrastructure examples
-└── README.md        # This file
+├── python/                     # Python and FastAPI examples
+│   ├── fastapi_example.py     # Complete FastAPI application
+│   └── requirements.txt       # Python dependencies
+├── nodejs/                     # Node.js and TypeScript examples
+│   ├── express_example.ts     # Complete Express application
+│   ├── package.json           # Node.js dependencies and scripts
+│   └── tsconfig.json          # TypeScript configuration
+├── devops/                     # Docker, Kubernetes, and infrastructure
+│   ├── Dockerfile.python      # Python production Dockerfile
+│   ├── Dockerfile.nodejs      # Node.js production Dockerfile
+│   ├── docker-compose.yml     # Development stack configuration
+│   ├── kubernetes-deployment.yaml  # K8s production manifests
+│   ├── nginx.conf             # Nginx reverse proxy config
+│   ├── init-db.sql            # PostgreSQL initialization script
+│   └── DEPLOYMENT_GUIDE.md    # Comprehensive deployment guide
+├── DATABASE_INTEGRATION.md     # Guide for adding database support
+├── TESTING_GUIDE.md           # Testing best practices and examples
+└── README.md                   # This file
 ```
 
 ## Python Examples
@@ -28,9 +51,22 @@ A complete FastAPI application demonstrating:
 **Run the example:**
 ```bash
 cd examples/python
-pip install fastapi uvicorn pydantic email-validator
+
+# Create virtual environment (recommended)
+python3 -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Run the application
 python fastapi_example.py
 ```
+
+The API will be available at:
+- **API:** http://localhost:8000
+- **Interactive docs:** http://localhost:8000/docs
+- **ReDoc:** http://localhost:8000/redoc
 
 **Test the API:**
 ```bash
@@ -52,10 +88,10 @@ curl -X POST "http://localhost:8000/api/v1/posts?author_id=1" \
 ```
 
 ### Use @python-dev to:
-- Add database integration (PostgreSQL, SQLAlchemy)
+- Add database integration (PostgreSQL, SQLAlchemy) - see [DATABASE_INTEGRATION.md](DATABASE_INTEGRATION.md)
 - Implement JWT authentication
 - Add LangChain integration for AI features
-- Write pytest tests
+- Write pytest tests - see [TESTING_GUIDE.md](TESTING_GUIDE.md)
 - Add ChromaDB for vector storage
 
 ## Node.js Examples
@@ -74,11 +110,21 @@ A complete Express.js application demonstrating:
 **Run the example:**
 ```bash
 cd examples/nodejs
-npm init -y
-npm install express cors express-validator
-npm install -D @types/node @types/express @types/cors typescript tsx
-npx tsx express_example.ts
+
+# Install dependencies
+npm install
+
+# Run in development mode with hot-reload
+npm run dev
+
+# Or build for production and run
+npm run build
+npm start
 ```
+
+The API will be available at:
+- **API:** http://localhost:3000
+- **Health check:** http://localhost:3000/health
 
 **Test the API:**
 ```bash
@@ -95,10 +141,10 @@ curl "http://localhost:3000/api/v1/users?limit=5&activeOnly=true"
 ```
 
 ### Use @nodejs-dev to:
-- Add database integration (Prisma, TypeORM)
+- Add database integration (Prisma, TypeORM) - see [DATABASE_INTEGRATION.md](DATABASE_INTEGRATION.md)
 - Implement authentication with Passport.js
 - Add React frontend components
-- Write Jest tests
+- Write Jest tests - see [TESTING_GUIDE.md](TESTING_GUIDE.md)
 - Add GraphQL support
 
 ## DevOps Examples
@@ -123,12 +169,16 @@ cd examples/devops
 # Build Python image
 docker build -f Dockerfile.python -t ona-api-python:latest ../python
 
-# Build Node.js image
+# Build Node.js image (requires package.json in nodejs directory)
 docker build -f Dockerfile.nodejs -t ona-api-nodejs:latest ../nodejs
 
 # Run container
 docker run -p 8000:8000 ona-api-python:latest
+# OR
+docker run -p 3000:3000 ona-api-nodejs:latest
 ```
+
+**Note:** Before building the Node.js image, ensure dependencies are configured in `package.json`.
 
 ### Docker Compose (`devops/docker-compose.yml`)
 
@@ -143,18 +193,36 @@ Complete development stack with:
 **Run the stack:**
 ```bash
 cd examples/devops
+
+# Start all services in the background
 docker-compose up -d
 
 # View logs
 docker-compose logs -f
 
-# Access services
+# Stop all services
+docker-compose down
+
+# Access services:
 # - Python API: http://localhost:8000
 # - Node.js API: http://localhost:3000
-# - Nginx: http://localhost:8080
-# - Adminer: http://localhost:8081
+# - Nginx Gateway: http://localhost:8080
+# - Adminer (DB UI): http://localhost:8081
 # - PostgreSQL: localhost:5432
 # - Redis: localhost:6379
+```
+
+**Note:** The stack includes PostgreSQL initialization script (`init-db.sql`) that creates tables for users and posts.
+
+**Testing the services:**
+```bash
+# Test through Nginx gateway
+curl http://localhost:8080/api/python/health
+curl http://localhost:8080/api/nodejs/health
+
+# Test direct access
+curl http://localhost:8000/health  # Python
+curl http://localhost:3000/health  # Node.js
 ```
 
 ### Kubernetes Example (`devops/kubernetes-deployment.yaml`)
@@ -172,17 +240,43 @@ Production-ready Kubernetes manifests:
 ```bash
 cd examples/devops
 
-# Apply manifests
+# Apply all manifests (creates namespace, configmap, secret, deployment, service, HPA)
 kubectl apply -f kubernetes-deployment.yaml
 
-# Check deployment
+# Check deployment status
 kubectl get pods -n production
 kubectl get deployments -n production
 kubectl get hpa -n production
 
 # View logs
 kubectl logs -f deployment/ona-api -n production
+
+# Access the service (port-forward for testing)
+kubectl port-forward -n production service/ona-api 8080:80
+curl http://localhost:8080/health
 ```
+
+**Important Notes:**
+- The manifest includes a sample Secret with base64-encoded placeholder values
+- **For production:** Replace secrets with actual values or use external secret management
+- The deployment requires a Kubernetes cluster with metrics-server for HPA
+- For local testing, use Minikube or kind
+
+**Production Setup:**
+```bash
+# Create real secrets (example)
+kubectl create secret generic ona-secrets \
+  --namespace=production \
+  --from-literal=database-url="postgresql://user:pass@host:5432/db" \
+  --from-literal=redis-url="redis://host:6379/0" \
+  --from-literal=openai-api-key="sk-..." \
+  --from-literal=anthropic-api-key="sk-ant-..."
+
+# Then apply the deployment
+kubectl apply -f kubernetes-deployment.yaml
+```
+
+See [DEPLOYMENT_GUIDE.md](devops/DEPLOYMENT_GUIDE.md) for comprehensive deployment instructions.
 
 ### Use @devops to:
 - Create Terraform configurations
@@ -190,6 +284,8 @@ kubectl logs -f deployment/ona-api -n production
 - Configure Ingress and TLS
 - Add monitoring (Prometheus, Grafana)
 - Create Helm charts
+
+See [DEPLOYMENT_GUIDE.md](devops/DEPLOYMENT_GUIDE.md) for detailed deployment instructions.
 
 ## Documentation Examples
 
@@ -269,6 +365,36 @@ kubectl apply -f examples/devops/kubernetes-deployment.yaml
 - **Iterate**: Use agents multiple times to refine the code
 - **Combine agents**: Use multiple agents for different aspects of a feature
 - **Learn patterns**: Study the generated code to learn best practices
+
+## Comprehensive Guides
+
+This examples directory includes detailed guides for advanced topics:
+
+### 📖 [DATABASE_INTEGRATION.md](DATABASE_INTEGRATION.md)
+Learn how to replace in-memory storage with PostgreSQL:
+- SQLAlchemy setup for Python/FastAPI
+- Prisma setup for Node.js/Express
+- Database migrations with Alembic and Prisma
+- Connection pooling and optimization
+- Production best practices
+
+### 🧪 [TESTING_GUIDE.md](TESTING_GUIDE.md)
+Comprehensive testing strategies and examples:
+- Unit testing with pytest and Jest
+- Integration testing with test clients
+- API testing with cURL
+- Docker and Docker Compose testing
+- Load testing with ab and wrk
+- CI/CD integration
+
+### 🚀 [devops/DEPLOYMENT_GUIDE.md](devops/DEPLOYMENT_GUIDE.md)
+Production deployment instructions:
+- Local development setup
+- Docker image building and running
+- Docker Compose stack deployment
+- Kubernetes deployment and management
+- Scaling and monitoring
+- Troubleshooting common issues
 
 ## Resources
 
