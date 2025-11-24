@@ -98,6 +98,110 @@ Check the `examples/` directory for sample implementations:
 - `examples/nodejs/` - Express.js TypeScript examples
 - `examples/devops/` - Docker, Kubernetes, and deployment configs
 
+## Backend FastAPI Service
+
+A production-ready FastAPI backend service located in `backend/api/` with modular structure, health checks, LLM proxy placeholder, and comprehensive configuration management.
+
+### Running Locally
+
+From the `backend/api` directory:
+
+```bash
+# Install dependencies
+pip install -r requirements.txt
+
+# Run the application
+uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+```
+
+### Running in Gitpod
+
+The service is pre-configured for Gitpod. After opening the workspace:
+
+```bash
+cd backend/api
+pip install -r requirements.txt
+uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+```
+
+The API will be available at the Gitpod-exposed port 8000.
+
+### Running with Docker
+
+```bash
+# Build the image
+cd backend/api
+docker build -t ona-backend-api .
+
+# Run the container
+docker run -p 8000:8000 \
+  -e OPENAI_API_KEY=your-key-here \
+  ona-backend-api
+```
+
+### Environment Variables
+
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `APP_NAME` | Application name | Ona Backend API |
+| `APP_VERSION` | Application version | 0.1.0 |
+| `OPENAI_API_KEY` | OpenAI API key for LLM integration | None |
+| `ANTHROPIC_API_KEY` | Anthropic API key for LLM integration | None |
+| `LOG_LEVEL` | Logging level (DEBUG, INFO, WARNING, ERROR) | INFO |
+| `ENV` | Environment (development, staging, production) | development |
+
+### API Endpoints
+
+- `GET /health` - Health check with uptime information
+- `GET /info` - Application metadata
+- `POST /llm` - LLM proxy endpoint
+- `GET /docs` - OpenAPI documentation (Swagger UI)
+- `GET /redoc` - ReDoc documentation
+
+### LLM Endpoint Behavior
+
+The `/llm` endpoint accepts a JSON body with a `prompt` field (and optional `model`):
+
+```json
+{
+  "prompt": "Hello, how are you?",
+  "model": "gpt-4"
+}
+```
+
+**Without API keys configured:** Returns a stub response with `stub: true` and a message explaining how to configure API keys.
+
+**With OPENAI_API_KEY or ANTHROPIC_API_KEY set:** Returns a stub response indicating the integration point is ready for implementation.
+
+### Extending LLM Integration
+
+To implement real LLM calls:
+
+1. Edit `backend/api/app/llm.py`
+2. In the `process_prompt()` function, replace the stub responses with actual API calls:
+   - For OpenAI: Use the `openai` library to make chat completion requests
+   - For Anthropic: Use the `anthropic` library to make message requests
+3. Add the necessary client libraries to `requirements.txt`
+4. Update the response to set `stub=False` when returning real LLM output
+
+Example integration point in `llm.py`:
+```python
+if settings.OPENAI_API_KEY:
+    # Replace this stub with:
+    # from openai import OpenAI
+    # client = OpenAI(api_key=settings.OPENAI_API_KEY)
+    # response = client.chat.completions.create(...)
+    # return LLMResponse(provider="openai", ..., stub=False)
+```
+
+### Running Tests
+
+```bash
+cd backend/api
+pip install -r requirements.txt
+pytest tests/ -v
+```
+
 ## License
 
 MIT
