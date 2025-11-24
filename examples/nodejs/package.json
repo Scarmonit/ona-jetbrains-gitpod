@@ -5,7 +5,7 @@
   "main": "dist/index.js",
   "scripts": {
     "dev": "tsx express_example.ts",
-    "build": "tsc --outDir dist express_example.ts",
+    "build": "tsc",
     "start": "node dist/express_example.js",
     "test": "jest",
     "lint": "eslint . --ext .ts",
