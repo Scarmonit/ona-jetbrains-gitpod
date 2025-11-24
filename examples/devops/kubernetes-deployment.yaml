@@ -1,3 +1,52 @@
+---
+# Namespace
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: production
+  labels:
+    name: production
+---
+# ConfigMap for application configuration
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ona-config
+  namespace: production
+data:
+  ENVIRONMENT: "production"
+  LOG_LEVEL: "info"
+  PORT: "8000"
+  WORKERS: "4"
+---
+# Secret for sensitive data (base64 encoded - replace with actual values)
+# Create with: kubectl create secret generic ona-secrets --from-literal=database-url=... --from-literal=redis-url=...
+apiVersion: v1
+kind: Secret
+metadata:
+  name: ona-secrets
+  namespace: production
+type: Opaque
+data:
+  # Example values (base64 encoded) - REPLACE WITH REAL VALUES
+  # echo -n "postgresql://user:pass@host:5432/db" | base64
+  database-url: cG9zdGdyZXNxbDovL3VzZXI6cGFzc0Bob3N0OjU0MzIvZGI=
+  # echo -n "redis://host:6379/0" | base64
+  redis-url: cmVkaXM6Ly9ob3N0OjYzNzkvMA==
+  # echo -n "sk-..." | base64
+  openai-api-key: c2stLi4u
+  # echo -n "sk-ant-..." | base64  
+  anthropic-api-key: c2stYW50LS4uLg==
+---
+# ServiceAccount for the application
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: ona-api
+  namespace: production
+  labels:
+    app: ona-api
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -46,9 +95,20 @@ spec:
         
         env:
         - name: ENVIRONMENT
-          value: "production"
+          valueFrom:
+            configMapKeyRef:
+              name: ona-config
+              key: ENVIRONMENT
         - name: LOG_LEVEL
-          value: "info"
+          valueFrom:
+            configMapKeyRef:
+              name: ona-config
+              key: LOG_LEVEL
+        - name: PORT
+          valueFrom:
+            configMapKeyRef:
+              name: ona-config
+              key: PORT
         - name: DATABASE_URL
           valueFrom:
             secretKeyRef:

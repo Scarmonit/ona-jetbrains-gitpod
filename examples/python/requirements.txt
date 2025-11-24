@@ -1,0 +1,26 @@
+# FastAPI Example Dependencies
+# Install with: pip install -r requirements.txt
+
+# FastAPI and web framework
+fastapi==0.109.0
+uvicorn[standard]==0.27.0
+
+# Pydantic for data validation
+pydantic==2.5.3
+pydantic-settings==2.1.0
+
+# Email validation support for Pydantic EmailStr
+email-validator==2.1.1
+
+# Optional: Database support (for future enhancements)
+# sqlalchemy==2.0.25
+# psycopg2-binary==2.9.9
+# alembic==1.13.1
+
+# Optional: Redis support (for future enhancements)
+# redis==5.0.1
+
+# Optional: Testing
+# pytest==7.4.4
+# pytest-asyncio==0.23.3
+# httpx==0.26.0
