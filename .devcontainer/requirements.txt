@@ -1,0 +1,23 @@
+# AI/LLM Libraries
+anthropic==0.40.0
+openai==1.59.5
+langchain==0.3.13
+langchain-core==0.3.28
+langchain-community==0.3.13
+
+# Vector Database
+chromadb==0.5.23
+
+# Data Science & Notebooks
+jupyter==1.1.1
+notebook==7.3.2
+ipython==8.31.0
+
+# Web Frameworks
+fastapi==0.115.6
+uvicorn[standard]==0.34.0
+
+# Utilities
+requests==2.32.3
+python-dotenv==1.0.1
+pydantic==2.10.4

@@ -38,7 +38,6 @@ A pre-configured cloud development environment with JetBrains IDE support via Gi
 - kubectl, helm, minikube
 - Terraform
 - GitHub CLI
-- Ollama (local LLM)
 
 ### Python Packages
 - anthropic, openai - AI APIs
@@ -57,6 +56,19 @@ A pre-configured cloud development environment with JetBrains IDE support via Gi
 | 8080 | Proxy |
 | 8888 | Jupyter |
 | 11434 | Ollama |
+
+## Optional: Install Ollama
+
+To install Ollama for local LLM support, run this command after the container starts:
+
+```bash
+curl -fsSL https://ollama.com/install.sh | sh
+```
+
+Then start Ollama:
+```bash
+ollama serve
+```
 
 ## Environment Variables
 

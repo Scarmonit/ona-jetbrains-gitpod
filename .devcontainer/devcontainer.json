@@ -1,7 +1,9 @@
 {
   "$schema": "https://raw.githubusercontent.com/devcontainers/spec/main/schemas/devContainer.schema.json",
   "name": "Ona JetBrains Environment",
-  "image": "mcr.microsoft.com/devcontainers/universal:2",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
 
   "features": {
     "ghcr.io/devcontainers/features/node:1": {
@@ -36,7 +38,7 @@
         "com.intellij.jupyter"
       ],
       "backend": {
-        "memory": 8192
+        "memory": 6144
       }
     },
     "vscode": {

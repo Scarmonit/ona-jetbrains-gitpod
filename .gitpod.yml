@@ -56,8 +56,17 @@ jetbrains:
       - PythonCore
       - JavaScript
       - org.jetbrains.plugins.yaml
+      - com.intellij.database
+      - org.intellij.plugins.markdown
+      - com.jetbrains.restClient
       - Docker
       - com.intellij.kubernetes
+      - org.intellij.plugins.hcl
+      - org.toml.lang
+      - com.intellij.plugins.vscodekeymap
+      - com.intellij.java
+      - org.jetbrains.kotlin
+      - com.intellij.jupyter
     prebuilds:
       version: stable
   pycharm:
@@ -65,12 +74,18 @@ jetbrains:
       - com.intellij.database
       - com.jetbrains.restClient
       - com.intellij.jupyter
+      - org.intellij.plugins.yaml
+      - Docker
+      - com.intellij.kubernetes
+      - org.intellij.plugins.markdown
     prebuilds:
       version: stable
   webstorm:
     plugins:
       - JavaScript
       - org.jetbrains.plugins.yaml
+      - org.intellij.plugins.markdown
+      - Docker
     prebuilds:
       version: stable
 
@@ -85,7 +100,7 @@ vscode:
 
 github:
   prebuilds:
-    master: true
+    main: true
     branches: true
     pullRequests: true
     pullRequestsFromForks: false

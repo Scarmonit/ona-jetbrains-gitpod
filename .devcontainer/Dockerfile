@@ -12,20 +12,15 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # Install Ollama (optional - for local LLM)
-RUN curl -fsSL https://ollama.com/install.sh | sh || true
+# Note: Ollama installation can be done manually after container starts
+# Run: curl -fsSL https://ollama.com/install.sh | sh
+# This avoids security concerns with piping curl to shell during build
 
 # Set up Python environment
+COPY requirements.txt /tmp/requirements.txt
 RUN pip install --upgrade pip && \
-    pip install \
-    anthropic \
-    openai \
-    langchain \
-    chromadb \
-    jupyter \
-    fastapi \
-    uvicorn \
-    requests \
-    python-dotenv
+    pip install -r /tmp/requirements.txt && \
+    rm /tmp/requirements.txt
 
 # Set working directory
 WORKDIR /workspaces
@@ -35,9 +30,9 @@ ENV PYTHONPATH=/workspaces
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV EDITOR=vim
 
-# Healthcheck
+# Healthcheck - verify Node.js and Python are functional
 HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
-    CMD node --version && python --version || exit 1
+    CMD node -e "process.exit(0)" && python -c "import sys; sys.exit(0)" || exit 1
 
 # Labels for JetBrains
 LABEL maintainer="Scarmonit"
