@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-This is the **Ona JetBrains + Gitpod Environment** - a pre-configured cloud development environment optimized for full-stack development with AI-powered tools and JetBrains IDE support.
+This is the **Ona JetBrains + Gitpod Environment** – a pre-configured cloud development environment optimized for full‑stack development with AI-powered tools and JetBrains IDE support.
 
 ## Code Style and Conventions
 
@@ -17,7 +17,7 @@ This is the **Ona JetBrains + Gitpod Environment** - a pre-configured cloud deve
 - Follow PEP 8 style guidelines
 - Use type hints for function signatures
 - Prefer f-strings for string formatting
-- Use dataclasses or Pydantic models for structured data
+- Use `dataclasses` or Pydantic models for structured data
 - Write docstrings for all public functions and classes (Google style)
 - Use async/await for I/O-bound operations in FastAPI
 
@@ -48,9 +48,9 @@ This is the **Ona JetBrains + Gitpod Environment** - a pre-configured cloud deve
 ### Best Practices
 - Store API keys in environment variables, never in code
 - Implement rate limiting and retry logic
-- Log all LLM interactions for debugging
+- Log LLM interactions for debugging (avoid sensitive data)
 - Use streaming responses for better UX
-- Implement proper token counting and cost tracking
+- Track tokens and cost
 
 ## API Development
 
@@ -62,10 +62,10 @@ This is the **Ona JetBrains + Gitpod Environment** - a pre-configured cloud deve
 - Implement proper CORS configuration
 - Add health check endpoints
 
-### REST Client
+### REST Design
 - Use descriptive endpoint names
-- Version your APIs (e.g., /api/v1/)
-- Implement proper pagination for list endpoints
+- Version APIs (e.g., `/api/v1/`)
+- Implement pagination for list endpoints
 - Use appropriate HTTP methods (GET, POST, PUT, DELETE)
 
 ## Testing
@@ -73,43 +73,43 @@ This is the **Ona JetBrains + Gitpod Environment** - a pre-configured cloud deve
 ### General
 - Write unit tests for business logic
 - Write integration tests for API endpoints
-- Aim for meaningful test coverage, not just high percentages
-- Use descriptive test names that explain what is being tested
+- Aim for meaningful coverage (quality over %)
+- Use descriptive test names
 - Mock external dependencies
 
-### Python Testing
-- Use pytest as the testing framework
-- Use fixtures for reusable test setup
-- Use parametrize for testing multiple scenarios
+### Python
+- Use `pytest`
+- Use fixtures for reusable setup
+- Use `@pytest.mark.parametrize` for scenarios
 
-### JavaScript Testing
-- Use Jest or Vitest for testing
+### JavaScript
+- Use Jest or Vitest
 - Mock external API calls
-- Test both success and error cases
+- Test success and error cases
 
 ## Docker and Containers
 
-- Use specific version tags, not `latest`
-- Minimize layer count in Dockerfiles
-- Clean up apt cache to reduce image size
-- Use .dockerignore to exclude unnecessary files
-- Run containers as non-root users when possible
+- Use specific version tags (avoid `latest`)
+- Minimize layer count
+- Clean apt cache to reduce image size
+- Use `.dockerignore` to exclude unnecessary files
+- Run as non-root when possible
 
 ## Kubernetes
 
-- Use resource limits and requests
-- Implement liveness and readiness probes
-- Use ConfigMaps for configuration
+- Set resource limits and requests
+- Add liveness and readiness probes
+- Use ConfigMaps for non-sensitive config
 - Use Secrets for sensitive data
 - Label resources consistently
 
 ## Environment Variables
 
-The following environment variables are commonly used:
-- `OPENAI_API_KEY` - OpenAI API authentication
-- `ANTHROPIC_API_KEY` - Anthropic Claude API authentication
-- `PYTHONPATH` - Python module search path
-- `NODE_ENV` - Node.js environment (development/production)
+Common variables:
+- `OPENAI_API_KEY` – OpenAI API authentication
+- `ANTHROPIC_API_KEY` – Anthropic Claude API authentication
+- `PYTHONPATH` – Python module search path
+- `NODE_ENV` – Node.js environment (development/production)
 
 ## Available Tools and Services
 
@@ -123,29 +123,32 @@ The following environment variables are commonly used:
 - Ollama (local LLM runtime)
 
 ### Common Ports
-- 3000 - Development server
-- 5000 - Flask API
-- 8000 - FastAPI
-- 8888 - Jupyter Notebook
-- 11434 - Ollama API
+- 3000 – Development server
+- 5000 – Flask API
+- 8000 – FastAPI
+- 8888 – Jupyter Notebook
+- 11434 – Ollama API
 
-## Custom Copilot Agents
+## Copilot Usage (Important)
 
-This project includes specialized Copilot agents for different domains:
+Custom agent names like `@python-dev`, `@nodejs-dev`, `@devops`, `@docs` are NOT real participants and cannot be invoked. They have been removed to avoid confusion.
 
-- **@python-dev** - Python and FastAPI development
-- **@nodejs-dev** - Node.js and JavaScript development  
-- **@devops** - Docker, Kubernetes, and Terraform
-- **@docs** - Documentation and markdown
+Use a single assistant: **@copilot**.
 
-Use these agents by mentioning them in Copilot chat (e.g., "@python-dev help me create a FastAPI endpoint").
+You can ask in plain English, for example:
+- "Create a FastAPI endpoint that returns a list of sample users."
+- "Write a Dockerfile for a Python FastAPI app using uvicorn."
+- "Generate a README section explaining how to run the dev environment."
+- "Add a Kubernetes Deployment manifest for the API with resource limits."
+
+If you don't know how to phrase something, just describe what you want to accomplish.
 
 ## Common Tasks
 
 ### Starting Services
 - FastAPI: `uvicorn main:app --reload --host 0.0.0.0 --port 8000`
 - Jupyter: `jupyter notebook --ip=0.0.0.0 --port=8888 --no-browser`
-- Ollama: `ollama serve` (then `ollama pull llama2` to download models)
+- Ollama: `ollama serve` then `ollama pull llama2`
 
 ### Development Workflow
 1. Make code changes
@@ -159,24 +162,24 @@ Use these agents by mentioning them in Copilot chat (e.g., "@python-dev help me 
 - Never commit API keys or secrets
 - Use environment variables for sensitive configuration
 - Validate and sanitize all user inputs
-- Implement proper authentication and authorization
-- Keep dependencies up to date
-- Use HTTPS for all external communications
-- Implement rate limiting on public APIs
+- Implement authentication & authorization
+- Keep dependencies updated
+- Use HTTPS for external calls
+- Rate limit public APIs
 
 ## Performance Guidelines
 
-- Use async programming for I/O operations
+- Use async for I/O operations
 - Implement caching where appropriate
 - Optimize database queries
 - Use connection pooling
 - Monitor resource usage
-- Implement proper logging for debugging
+- Add structured logging
 
 ## Documentation
 
-- Keep README.md up to date
-- Document all public APIs
+- Keep `README.md` up to date
+- Document public APIs
 - Add inline comments for complex logic
-- Update this file when adding new conventions
-- Include examples in documentation
+- Update this file when conventions change
+- Include runnable examples where helpful
