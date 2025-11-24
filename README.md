@@ -98,6 +98,26 @@ Check the `examples/` directory for sample implementations:
 - `examples/nodejs/` - Express.js TypeScript examples
 - `examples/devops/` - Docker, Kubernetes, and deployment configs
 
+## AI Code Review Workflow Test
+
+This repository includes an AI Code Review workflow that responds to mentions in PR comments.
+
+**How to trigger:**
+1. Open a pull request with code changes
+2. Comment on the PR with one of: `@copilot`, `@gemini`, or `@claude`
+
+| Mention | Behavior |
+|---------|----------|
+| `@copilot` | Posts guidance on enabling GitHub Copilot code review |
+| `@gemini` | Generates a code review using Google Gemini (requires `GEMINI_API_KEY` secret) |
+| `@claude` | Generates a code review using Anthropic Claude (requires `ANTHROPIC_API_KEY` secret) |
+
+**Note:** If secrets are not configured, the workflow posts instructions on how to add them.
+
+## License
+
+MIT
+
 ## Backend FastAPI Service
 
 A production-ready FastAPI backend service located in `backend/api/` with modular structure, health checks, LLM proxy placeholder, and comprehensive configuration management.
