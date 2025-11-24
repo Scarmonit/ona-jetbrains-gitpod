@@ -10,7 +10,6 @@ from contextlib import asynccontextmanager
 from typing import AsyncGenerator
 
 from fastapi import FastAPI, HTTPException, status
-from pydantic import ValidationError
 
 from app.config import load_settings
 from app.llm import process_prompt
@@ -134,7 +133,7 @@ async def llm_proxy(request: LLMRequest) -> LLMResponse:
         LLMResponse: The LLM response or stub message.
 
     Raises:
-        HTTPException: If request validation fails or an unexpected error occurs.
+        HTTPException: If an unexpected error occurs.
     """
     logger = get_logger(__name__)
 
@@ -146,12 +145,6 @@ async def llm_proxy(request: LLMRequest) -> LLMResponse:
             f"stub={response.stub}"
         )
         return response
-    except ValidationError as e:
-        logger.error(f"Validation error in LLM request: {e}")
-        raise HTTPException(
-            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail=f"Validation error: {str(e)}",
-        )
     except Exception as e:
         logger.exception(f"Unexpected error processing LLM request: {e}")
         raise HTTPException(
