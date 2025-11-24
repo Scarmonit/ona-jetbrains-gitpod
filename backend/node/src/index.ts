@@ -82,14 +82,27 @@ export async function start(): Promise<void> {
   }
 }
 
-// Start the server if this module is run directly (not imported)
-const isMainModule =
-  typeof require !== 'undefined' &&
-  require.main === module;
+/**
+ * Check if this module is being run directly (not imported).
+ * Handles both CommonJS and ESM module systems.
+ */
+function isRunDirectly(): boolean {
+  // Skip if running in Jest test environment
+  if (process.env['JEST_WORKER_ID']) {
+    return false;
+  }
 
-// For ESM, check if this file is being run directly
-const isDirectExecution = process.argv[1]?.includes('index');
+  // Check for CommonJS (require.main === module)
+  if (typeof require !== 'undefined' && require.main === module) {
+    return true;
+  }
 
-if (isMainModule || (isDirectExecution && !process.env['JEST_WORKER_ID'])) {
+  // Check for ESM direct execution via process.argv
+  const scriptPath = process.argv[1] ?? '';
+  return scriptPath.includes('index.js') || scriptPath.includes('index.ts');
+}
+
+// Start the server if this module is run directly
+if (isRunDirectly()) {
   start().catch(console.error);
 }

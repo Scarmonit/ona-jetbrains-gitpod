@@ -58,6 +58,9 @@ interface AnthropicResponse {
   }>;
 }
 
+/** Milliseconds per minute for rate limiting calculations */
+const MS_PER_MINUTE = 60000;
+
 /**
  * Rate limiter using in-memory token bucket.
  */
@@ -88,7 +91,7 @@ class RateLimiter {
   private refill(): void {
     const now = Date.now();
     const elapsed = now - this.lastRefill;
-    const tokensToAdd = Math.floor((elapsed / 60000) * this.maxTokens);
+    const tokensToAdd = Math.floor((elapsed / MS_PER_MINUTE) * this.maxTokens);
     if (tokensToAdd > 0) {
       this.tokens = Math.min(this.maxTokens, this.tokens + tokensToAdd);
       this.lastRefill = now;
@@ -206,10 +209,12 @@ async function callAnthropic(prompt: string): Promise<LLMResponse> {
   const timeoutId = setTimeout(() => controller.abort(), config.llmTimeout);
 
   try {
+    // Guaranteed to be defined since this function is only called when anthropicApiKey is set
+    const apiKey = config.anthropicApiKey as string;
     const response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
       headers: {
-        'x-api-key': config.anthropicApiKey ?? '',
+        'x-api-key': apiKey,
         'anthropic-version': '2023-06-01',
         'Content-Type': 'application/json',
       },

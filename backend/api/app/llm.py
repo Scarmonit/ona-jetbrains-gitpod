@@ -5,14 +5,19 @@ Provides real OpenAI and Anthropic API integration with fallback to stub mode.
 Provider selection order: OpenAI (if key set) > Anthropic (if key set) > Stub.
 """
 
+from __future__ import annotations
+
 import hashlib
 import logging
-from typing import Optional
+from typing import TYPE_CHECKING, Optional
 
 import httpx
 from pydantic import BaseModel, Field
 
 from .config import get_settings
+
+if TYPE_CHECKING:
+    from .config import Settings
 
 logger = logging.getLogger(__name__)
 
@@ -62,7 +67,7 @@ def _get_prompt_hash_prefix(prompt: str) -> str:
     return hashlib.sha256(prompt.encode()).hexdigest()[:8]
 
 
-async def _call_openai(prompt: str, settings: Optional[object] = None) -> LLMResponse:
+async def _call_openai(prompt: str, settings: "Settings | None" = None) -> LLMResponse:
     """Call OpenAI Chat Completions API.
 
     Args:
@@ -157,7 +162,7 @@ async def _call_openai(prompt: str, settings: Optional[object] = None) -> LLMRes
         )
 
 
-async def _call_anthropic(prompt: str, settings: Optional[object] = None) -> LLMResponse:
+async def _call_anthropic(prompt: str, settings: "Settings | None" = None) -> LLMResponse:
     """Call Anthropic Messages API.
 
     Args:
