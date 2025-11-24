@@ -1,6 +1,6 @@
 # Ona JetBrains + Gitpod Environment
 
-A pre-configured cloud development environment with JetBrains IDE support via Gitpod.
+A pre-configured cloud development environment with JetBrains IDE support via Gitpod, featuring **GitHub Copilot custom agents** for enhanced AI-assisted development.
 
 ## Quick Start
 
@@ -14,6 +14,14 @@ A pre-configured cloud development environment with JetBrains IDE support via Gi
 
 ## Features
 
+### GitHub Copilot Custom Agents 🤖
+- **@python-dev** - Python & FastAPI development expert
+- **@nodejs-dev** - Node.js & TypeScript development expert
+- **@devops** - Docker, Kubernetes & Terraform expert
+- **@docs** - Documentation & markdown expert
+
+See [Copilot Usage Guide](.github/COPILOT_USAGE.md) for examples and tips.
+
 ### JetBrains Plugins (Pre-installed)
 - PythonCore - Python development
 - JavaScript - JS/TS support
@@ -26,7 +34,7 @@ A pre-configured cloud development environment with JetBrains IDE support via Gi
 ### VS Code Extensions
 - ESLint & Prettier
 - Python
-- GitHub Copilot
+- **GitHub Copilot** (with custom agents)
 - Docker
 - Kubernetes Tools
 - Terraform
@@ -63,6 +71,32 @@ A pre-configured cloud development environment with JetBrains IDE support via Gi
 Set these in your Gitpod dashboard or `.env` file:
 - `OPENAI_API_KEY` - OpenAI API key
 - `ANTHROPIC_API_KEY` - Anthropic API key
+
+## Using GitHub Copilot Custom Agents
+
+This repository includes specialized Copilot agents for different development tasks:
+
+```
+@python-dev Create a FastAPI endpoint for user authentication
+@nodejs-dev Write a TypeScript interface for my data model
+@devops Create a Kubernetes deployment with autoscaling
+@docs Write comprehensive API documentation
+```
+
+**Quick Tips:**
+- Use `@python-dev` for Python, FastAPI, and AI/LLM integration
+- Use `@nodejs-dev` for Node.js, TypeScript, and React
+- Use `@devops` for Docker, Kubernetes, Terraform, and CI/CD
+- Use `@docs` for README files, API docs, and tutorials
+
+📚 **[Full Copilot Usage Guide](.github/COPILOT_USAGE.md)**
+
+## Example Code
+
+Check the `examples/` directory for sample implementations:
+- `examples/python/` - FastAPI application examples
+- `examples/nodejs/` - Express.js TypeScript examples
+- `examples/devops/` - Docker, Kubernetes, and deployment configs
 
 ## License
 
